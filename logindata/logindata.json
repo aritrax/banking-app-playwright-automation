@@ -1,0 +1,52 @@
+[
+    {
+        "Username" : "standard_user" ,
+        "Password" : "bank_sauce" ,
+        "TestCase" : "LOGIN-001" ,
+        "expectedResult" : "success" ,
+        "tag" : "@smoke @regression" 
+    },
+    {
+        "Username" : "wrong_user" ,
+        "Password" : "bank_sauce" ,
+        "TestCase" : "LOGIN-002" ,
+        "expectedResult" : "fail" ,
+        "tag" : "@regression" 
+    },
+    {
+        "Username" : "standard_user" ,
+        "Password" : "wrong_sauce" ,
+        "TestCase" : "LOGIN-003" ,
+        "expectedResult" : "fail" ,
+        "tag" : "@regression" 
+    },
+    {
+        "Username" : "locked_user" ,
+        "Password" : "bank_sauce" ,
+        "TestCase" : "LOGIN-004" ,
+        "expectedResult" : "fail" ,
+        "tag" : "@regression" 
+    },
+    {
+        "Username" : "frozen_user" ,
+        "Password" : "bank_sauce" ,
+        "TestCase" : "LOGIN-005" ,
+        "expectedResult" : "success" ,
+        "tag" : " @regression" 
+    },
+    {
+        "Username" : "" , 
+        "Password" : "bank_sauce" ,
+        "TestCase" : "LOGIN-006" ,
+        "expectedResult" : "fail" ,
+        "tag" : " @regression" 
+    },
+    {
+        "Username" : "standard_user" ,
+        "Password" : "" ,
+        "TestCase" : "LOGIN-007" ,
+        "expectedResult" : "fail" ,
+        "tag" : " @regression" 
+    }
+
+]
