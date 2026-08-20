@@ -11,7 +11,8 @@ export class TransferPage
 
     async verifyTransferPage()
     {
-        expect(this.page).toHaveURL("https://qaplayground.com/bank/transfer")
         await this.page.waitForLoadState('networkidle');
+        expect(this.page).toHaveURL("https://qaplayground.com/bank/transfer")
+        
     }
 }
