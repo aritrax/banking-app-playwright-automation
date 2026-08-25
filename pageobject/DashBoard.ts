@@ -9,6 +9,7 @@ export class DashBoard
     payBillAction : Locator ;
     transcationAction : Locator ; 
     logout : Locator ;
+    sidebarAccount: Locator ;
 
     constructor(page: Page)
     {
@@ -19,6 +20,8 @@ export class DashBoard
         this.payBillAction = page.getByTestId("quick-action-bill-pay") ;
         this.transcationAction = page.getByTestId("quick-action-transactions") ;
         this.logout = page.getByLabel("Logout") ;
+
+        this.sidebarAccount = page.getByTestId("sidebar-link-accounts")
     }
 
     async verifyDashboard()
@@ -59,5 +62,10 @@ export class DashBoard
     {
         await this.logout.click() ;
         await expect(this.page).toHaveURL("https://qaplayground.com/bank/login")
+    }
+
+    async gotoAccount()
+    {
+        await this.sidebarAccount.click() ;
     }
 }
