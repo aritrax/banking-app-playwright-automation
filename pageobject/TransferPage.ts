@@ -1,4 +1,4 @@
-import {test , expect , Page , Locator} from "@playwright/test"
+import {expect , Page , Locator} from "@playwright/test"
 
 export class TransferPage
 {
@@ -39,8 +39,6 @@ export class TransferPage
 
     async verifyTransferPage()
     {   
-        await this.transferPage.click() ;
-        await this.page.waitForLoadState('networkidle');
         await expect(this.page).toHaveURL("https://qaplayground.com/bank/transfer")
     }
 
@@ -57,15 +55,30 @@ export class TransferPage
         await expect(this.confirmTransfer).toBeVisible() ;
     }
 
-    async verifySuccesfulTransfer()
+    async selectEligibleAccounts()
     {
-        await this.transferPage.click() ;
         await this.transferFrom.click();
         await this.transferfromOption.nth(1).click() ;
         await this.transferTo.click() ;
         await this.transfertoOption.first().click() ;
-        let availableBalanceText : any = await this.avilableBalance.textContent()
-        const availableBalance = Number(availableBalanceText?.replace(/[$,]/g, ""))
+    }
+
+    async getAvailableBalance()
+    {
+        const availableBalanceText = await this.avilableBalance.textContent() ;
+        return Number(availableBalanceText?.replace(/[$,]/g, "")) ;
+    }
+
+    async getAccountBalance(accountOption : Locator)
+    {
+        const accountText = await accountOption.textContent() ;
+        return Number(accountText?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, "")) ;
+    }
+
+    async verifySuccesfulTransfer()
+    {
+        await this.selectEligibleAccounts() ;
+        const availableBalance = await this.getAvailableBalance() ;
         if (availableBalance >= 100) 
         {
             await this.transferAmount.fill("100") ;
@@ -88,10 +101,7 @@ export class TransferPage
     async verifyTransferAmountValidation()
     {
         await this.transferPage.click() ;
-        await this.transferFrom.click();
-        await this.transferfromOption.nth(1).click() ;
-        await this.transferTo.click() ;
-        await this.transfertoOption.first().click() ;
+        await this.selectEligibleAccounts() ;
         
         // Zero Value
         await this.transferAmount.fill("0") ;
@@ -111,7 +121,6 @@ export class TransferPage
     async verifyTransferRequiredAccountsValidation()
     {   
         // From Account & To Account Missing 
-        await this.transferPage.click() ;
         await expect(this.transferTo).toBeDisabled(); 
         await this.transferAmount.fill("100") ;
         await this.transferDate.check();
@@ -123,7 +132,6 @@ export class TransferPage
 
     async verifySourceAccountNotAvailableAsDestination()
     {
-        await this.transferPage.click() ;
         await this.transferFrom.click();
         await this.transferfromOption.getByText("Everyday Checking").click()
         await this.transferTo.click() ;
@@ -132,13 +140,8 @@ export class TransferPage
 
     async verifyTransferExceedsAvailableBalance()
     {
-        await this.transferPage.click() ;
-        await this.transferFrom.click();
-        await this.transferfromOption.nth(1).click() ;
-        await this.transferTo.click() ;
-        await this.transfertoOption.first().click() ;
-        let availableBalanceText : any = await this.avilableBalance.textContent()
-        const availableBalance = Number(availableBalanceText?.replace(/[$,]/g, ""))
+        await this.selectEligibleAccounts() ;
+        const availableBalance = await this.getAvailableBalance() ;
         const toBeTransferAmount = availableBalance + 1 ;
         await this.transferAmount.fill(toBeTransferAmount.toString()) ;
         await this.transferDate.check();
@@ -149,13 +152,8 @@ export class TransferPage
 
     async verifyTransferConfirmationDetails()
     {
-        await this.transferPage.click() ;
-        await this.transferFrom.click();
-        await this.transferfromOption.nth(1).click() ;
-        await this.transferTo.click() ;
-        await this.transfertoOption.first().click() ;
-        let availableBalanceText : any = await this.avilableBalance.textContent()
-        const availableBalance = Number(availableBalanceText?.replace(/[$,]/g, ""))
+        await this.selectEligibleAccounts() ;
+        const availableBalance = await this.getAvailableBalance() ;
         if (availableBalance >= 100) 
         {
             await this.transferAmount.fill("100") ;
@@ -177,14 +175,11 @@ export class TransferPage
 
     async verifyTransferUpdatesAccountBalances()
     {   
-        await this.transferPage.click() ;
         await this.transferFrom.click();
-        const source_accountText = await this.transferfromOption.nth(1).textContent();
-        const source_balanceBefore = Number(source_accountText?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+        const source_balanceBefore = await this.getAccountBalance(this.transferfromOption.nth(1)) ;
         await this.transferfromOption.nth(1).click() ;
         await this.transferTo.click() ;
-        const destination_accountText = await this.transfertoOption.first().textContent();
-        const destination_balanceBefore = Number(destination_accountText?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+        const destination_balanceBefore = await this.getAccountBalance(this.transfertoOption.first()) ;
         await this.transfertoOption.first().click() ;
         if (source_balanceBefore >= 10) 
         {
@@ -201,12 +196,10 @@ export class TransferPage
 
         await this.transferPage.click() ;
         await this.transferFrom.click();
-        const source_accountTextAfter = await this.transferfromOption.nth(1).textContent();
-        const source_balanceAfter = Number(source_accountTextAfter?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+        const source_balanceAfter = await this.getAccountBalance(this.transferfromOption.nth(1)) ;
         await this.transferfromOption.nth(1).click() ;
         await this.transferTo.click() ;
-        const destination_accountTextAfter = await this.transfertoOption.first().textContent();
-        const destination_balanceAfter = Number(destination_accountTextAfter?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+        const destination_balanceAfter = await this.getAccountBalance(this.transfertoOption.first()) ;
         
         expect(source_balanceAfter).toBe(source_balanceBefore - 10);
         expect(destination_balanceAfter).toBe(destination_balanceBefore + 10);
@@ -214,14 +207,11 @@ export class TransferPage
 
     async verifyTransferCanBeCancelledWithoutCreatingTransaction()
     {
-        await this.transferPage.click() ;
         await this.transferFrom.click();
-        const source_accountText = await this.transferfromOption.nth(1).textContent();
-        const source_balanceBefore = Number(source_accountText?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+        const source_balanceBefore = await this.getAccountBalance(this.transferfromOption.nth(1)) ;
         await this.transferfromOption.nth(1).click() ;
         await this.transferTo.click() ;
-        const destination_accountText = await this.transfertoOption.first().textContent();
-        const destination_balanceBefore = Number(destination_accountText?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+        const destination_balanceBefore = await this.getAccountBalance(this.transfertoOption.first()) ;
         await this.transfertoOption.first().click() ;
         if (source_balanceBefore >= 10) 
         {
@@ -237,12 +227,10 @@ export class TransferPage
 
         await this.transferPage.click() ;
         await this.transferFrom.click();
-        const source_accountTextAfter = await this.transferfromOption.nth(1).textContent();
-        const source_balanceAfter = Number(source_accountTextAfter?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+        const source_balanceAfter = await this.getAccountBalance(this.transferfromOption.nth(1)) ;
         await this.transferfromOption.nth(1).click() ;
         await this.transferTo.click() ;
-        const destination_accountTextAfter = await this.transfertoOption.first().textContent();
-        const destination_balanceAfter = Number(destination_accountTextAfter?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+        const destination_balanceAfter = await this.getAccountBalance(this.transfertoOption.first()) ;
         
         expect(source_balanceAfter).toBe(source_balanceBefore);
         expect(destination_balanceAfter).toBe(destination_balanceBefore);
