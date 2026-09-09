@@ -11,7 +11,7 @@ test.beforeEach(async({page})=>
     const dashBoard = await poManger.getDashBoard() ;
     await loginPage.goto() ;
     await loginPage.Login(validUser.Username, validUser.Password) ;
-    //await dashBoard.gotoTransfer() ;
+    await dashBoard.gotoTransfer() ;
 })
 
 test("TRF-001 Verify Transfers page loads successfully @smoke @regession",async({page})=>
@@ -23,22 +23,19 @@ test("TRF-001 Verify Transfers page loads successfully @smoke @regession",async(
 
 test("TRF-002 Verify transfer form displays required fields and account options @smoke @regression", async ({ page }) => {
     const poManager = new POManager(page);
-    const transferPage = await poManager.getTransferPage();
-    await transferPage.verifyTransferPage() ;
+    const transferPage = await poManager.getTransferPage(); 
     await transferPage.verifyTransferForm();
 })
 
 test("TRF-003 Verify successful transfer between eligible accounts  @smoke @regression", async ({ page }) => {
     const poManager = new POManager(page);
     const transferPage = await poManager.getTransferPage();
-   // await transferPage.verifyTransferPage() ;
     await transferPage.verifySuccesfulTransfer() ;
 })
 
 test("TRF-004 Verify transfer amount validation @regression", async ({ page }) => {
     const poManager = new POManager(page);
     const transferPage = await poManager.getTransferPage();
-   // await transferPage.verifyTransferPage() ;
     await transferPage.verifyTransferAmountValidation() ;
 })
 
@@ -46,7 +43,6 @@ test("TRF-005 Verify transfer cannot be submitted without selecting required acc
 {
     const poManager = new POManager(page);
     const transferPage = await poManager.getTransferPage();
-   // await transferPage.verifyTransferPage() ;
     await transferPage.verifyTransferRequiredAccountsValidation() ;
 })
 
@@ -54,7 +50,6 @@ test("TRF-006 Verify transfer cannot be made when source and destination account
 {
     const poManager = new POManager(page);
     const transferPage = await poManager.getTransferPage();
-   // await transferPage.verifyTransferPage() ;
     await transferPage.verifySourceAccountNotAvailableAsDestination() ;
 })
 
@@ -62,7 +57,6 @@ test("TRF-007 Verify transfer is rejected when amount exceeds available balance"
 {
     const poManager = new POManager(page);
     const transferPage = await poManager.getTransferPage();
-   // await transferPage.verifyTransferPage() ;
     await transferPage.verifyTransferExceedsAvailableBalance() ;
 })
 
