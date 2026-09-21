@@ -127,7 +127,6 @@ export class TransferPage
         await this.reviewTransfer.click() ;
         await expect (this.confirmTransfer).not.toBeVisible() ;
         await expect(this.transferErrorMessage).toHaveText("Please select a From account.");
-        // 
     }
 
     async verifySourceAccountNotAvailableAsDestination()

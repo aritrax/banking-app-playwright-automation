@@ -3,6 +3,7 @@ import { LoginPage } from './LoginPage';
 import { DashBoard } from './DashBoard';
 import { TransferPage } from './TransferPage';
 import { AccountPage } from './AccountPage';
+import { SendMoneyPage } from './SendMoneyPage';
 
 export class POManager
 {
@@ -11,6 +12,7 @@ export class POManager
     dashBoard : DashBoard ;
     transferPage : TransferPage ;
     accountPage : AccountPage ;
+    sendmoneyPage : SendMoneyPage;
 
     constructor(page: Page)
     {
@@ -19,6 +21,7 @@ export class POManager
         this.dashBoard = new DashBoard(this.page) ;
         this.transferPage = new TransferPage(this.page) ;
         this.accountPage = new AccountPage(this.page) ;
+        this.sendmoneyPage = new SendMoneyPage(this.page) ;
     }
 
     async getLoginPage()
@@ -39,6 +42,11 @@ export class POManager
     async getAccountPage()
     {
         return this.accountPage ;
+    }
+
+    async sendMoneyPage()
+    {
+        return this.sendmoneyPage ;
     }
 
 }

@@ -11,6 +11,7 @@ export class DashBoard
     logout : Locator ;
     sidebarAccount: Locator ;
     transferPage : Locator ;
+    sendMoneyPage : Locator ;
 
     constructor(page: Page)
     {
@@ -24,6 +25,7 @@ export class DashBoard
 
         this.sidebarAccount = page.getByTestId("sidebar-link-accounts")
         this.transferPage = page.getByTestId("sidebar-link-transfer") ;
+        this.sendMoneyPage = page.getByTestId("sidebar-link-send-money") ;
     }
 
     async verifyDashboard()
@@ -75,5 +77,11 @@ export class DashBoard
     {
         await this.transferPage.click() ;
         await expect(this.page).toHaveURL("https://qaplayground.com/bank/transfer");
+    }
+
+    async gotoSendMoney()
+    {
+        await this.sendMoneyPage.click() ;
+        await expect(this.page).toHaveURL("https://qaplayground.com/bank/send-money");
     }
 }
