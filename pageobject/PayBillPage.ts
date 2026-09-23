@@ -17,6 +17,8 @@ export class PayBillPage
     billerReference : Locator ;
     billerSelectedSummary : Locator ;
     addBillerButton : Locator ;
+    billpayError  : Locator ;
+    billConfirmationSummary : Locator ;
 
     constructor(public page: Page)
     {
@@ -36,6 +38,8 @@ export class PayBillPage
         this.billerReference = page.getByPlaceholder("e.g. ACC-0042");
         this.addBillerButton = page.getByTestId("save-add-biller-btn") ;
         this.billerSelectedSummary = page.getByTestId("biller-selected-summary") ;
+        this.billpayError = page.getByTestId("bill-pay-error") ;
+        this.billConfirmationSummary = page.getByTestId("bill-confirm-summary") ;
 
     }
 
@@ -86,4 +90,69 @@ export class PayBillPage
         await expect(this.paymentSuccessMsg).toContainText("Payment Scheduled");
     }
     
+    async amountValidation()
+    {   
+        // Zero Value Validation
+        await this.fromAccount.click();
+        await this.fromAccountOption.first().click();
+        await this.amount.fill("0");
+        await this.verifyExistingBiller();
+        await this.reviewPayment.click();
+        await expect(this.billpayError).toContainText("Please enter a valid amount.") ;
+
+        // Negetive Value Validation 
+        await this.amount.fill("-5");
+        await this.reviewPayment.click();
+        await expect(this.billpayError).toContainText("Please enter a valid amount.") ;
+
+    }
+
+    async getAvailableBalance()
+    {
+        await this.fromAccount.click();
+        const balanceText = await this.fromAccountOption.first().textContent();
+        await this.fromAccountOption.first().click();
+        return Number(balanceText?.match(/\$[\d,]+(?:\.\d{2})?/)?.[0].replace(/[$,]/g, ""));
+    }
+
+    async verifyInsufficientFunds() 
+    {
+        await this.fromAccount.click();
+        await this.fromAccountOption.first().click();
+        const balance = await this.getAvailableBalance();
+        await this.amount.fill(String(balance + 1));
+        await this.verifyExistingBiller();
+        await this.reviewPayment.click();
+        await this.confirmPayment.click();
+        await expect(this.billpayError).toContainText("Insufficient funds") ;
+    }
+
+    async futurepayment()
+    {
+        await this.fromAccount.click();
+        await this.fromAccountOption.first().click();
+        await this.amount.fill("5");
+        await this.verifyExistingBiller();
+        await this.paymentDate.pressSequentially("10262026")
+        await this.reviewPayment.click();
+        await this.confirmPayment.click();
+        await expect(this.paymentSuccessMsg).toContainText("Payment Scheduled") ;
+
+    }
+
+    async paymentReviewConfirmation()
+    {
+        await this.fromAccount.click();
+        await this.fromAccountOption.first().click();
+        await this.amount.fill("5");
+        await this.memo.fill("Test Payment");
+        await this.verifyExistingBiller();
+        await this.reviewPayment.click();
+        await expect(this.billConfirmationSummary).toContainText("Everyday Checking");
+        await expect(this.billConfirmationSummary).toContainText("City Electric Co.");
+        await expect(this.billConfirmationSummary).toContainText("ACC-0042");
+        await expect(this.billConfirmationSummary).toContainText("$5.00");
+
+    }
+
 }

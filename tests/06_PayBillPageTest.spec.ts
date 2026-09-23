@@ -48,3 +48,31 @@ test("BILL-005 Verify successful bill payment to an existing biller @smoke @regr
     const payBillPage = await poManger.getPayBillPage() ;
     await payBillPage.successfulBillPayment() ;
 })
+
+test("BILL-006 Verify bill payment amount validation @regression",async({page})=>
+{
+    const poManger = new POManager(page) ;
+    const payBillPage = await poManger.getPayBillPage() ;
+    await payBillPage.amountValidation();
+})
+
+test("BILL-007 Verify bill payment is rejected when amount exceeds available balance @regression",async({page})=>
+{
+    const poManger = new POManager(page) ;
+    const payBillPage = await poManger.getPayBillPage() ;
+    await payBillPage.verifyInsufficientFunds() ;
+})
+
+test("BILL-008 Verify future payment date can be scheduled successfully @regression",async({page})=>
+{
+    const poManger = new POManager(page) ;
+    const payBillPage = await poManger.getPayBillPage() ;
+    await payBillPage.futurepayment() ;
+})
+
+test("BILL-009 Verify payment review displays correct payment details before confirmation @regression", async({page})=>
+{
+    const poManger = new POManager(page) ;
+    const payBillPage = await poManger.getPayBillPage() ;
+    await payBillPage.paymentReviewConfirmation() ;
+})
