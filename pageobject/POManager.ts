@@ -4,6 +4,7 @@ import { DashBoard } from './DashBoard';
 import { TransferPage } from './TransferPage';
 import { AccountPage } from './AccountPage';
 import { SendMoneyPage } from './SendMoneyPage';
+import { PayBillPage } from './PayBillPage';
 
 export class POManager
 {
@@ -47,6 +48,11 @@ export class POManager
     async sendMoneyPage()
     {
         return this.sendmoneyPage ;
+    }
+
+    async getPayBillPage()
+    {
+        return new PayBillPage(this.page) ;
     }
 
 }

@@ -84,4 +84,10 @@ export class DashBoard
         await this.sendMoneyPage.click() ;
         await expect(this.page).toHaveURL("https://qaplayground.com/bank/send-money");
     }
+
+    async gotoPayBill()
+    {
+        await this.payBillAction.click() ;
+        await expect(this.page).toHaveURL("https://qaplayground.com/bank/bill-pay");
+    }
 }
