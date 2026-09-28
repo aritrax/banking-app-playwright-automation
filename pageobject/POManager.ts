@@ -14,6 +14,7 @@ export class POManager
     transferPage : TransferPage ;
     accountPage : AccountPage ;
     sendmoneyPage : SendMoneyPage;
+    payBillPage: PayBillPage;
 
     constructor(page: Page)
     {
@@ -23,11 +24,17 @@ export class POManager
         this.transferPage = new TransferPage(this.page) ;
         this.accountPage = new AccountPage(this.page) ;
         this.sendmoneyPage = new SendMoneyPage(this.page) ;
+        this.payBillPage = new PayBillPage(this.page) ;
     }
 
     async getLoginPage()
     {
         return this.loginPage ;
+    }
+
+    async getDashboard()
+    {
+        return this.dashBoard ;
     }
 
     async getDashBoard()
@@ -45,6 +52,11 @@ export class POManager
         return this.accountPage ;
     }
 
+    async getSendMoneyPage()
+    {
+        return this.sendmoneyPage ;
+    }
+
     async sendMoneyPage()
     {
         return this.sendmoneyPage ;
@@ -52,7 +64,7 @@ export class POManager
 
     async getPayBillPage()
     {
-        return new PayBillPage(this.page) ;
+        return this.payBillPage ;
     }
 
 }
