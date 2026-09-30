@@ -1,11 +1,15 @@
+<<<<<<< HEAD
 ```markdown
 # Banking Application – Playwright Automation
+=======
+# Banking Application - Playwright Automation
+>>>>>>> 1b9afff (docs: update project README)
 
 ## 📌 Project Overview
 
 This project is an end-to-end test automation framework built using **Playwright with TypeScript** for a banking web application.
 
-The framework follows the **Page Object Model (POM)** design pattern and covers functional, positive, negative, validation, filtering, sorting, pagination, and business-flow scenarios across multiple banking modules.
+The framework follows the **Page Object Model (POM)** design pattern and covers functional, positive, negative, validation, filtering, sorting, pagination, and transaction scenarios.
 
 The project covers **8 major modules with 71 test scenarios**.
 
@@ -62,291 +66,313 @@ banking-app-playwright-automation/
 ├── test-results/
 ├── .gitignore
 ├── package.json
-└── package-lock.json
+├── package-lock.json
+└── README.md
 ```
-
----
-
-# 🏗️ Framework Architecture
-
-The framework follows the **Page Object Model (POM)** architecture.
-
-## Page Objects
-
-Each major application module has a dedicated Page Object class containing:
-
-- Locators
-- Page-specific actions
-- Reusable methods
-- Business-flow methods
-
-Examples:
-
-```text
-LoginPage.ts
-AccountPage.ts
-TransferPage.ts
-SendMoneyPage.ts
-PayBillPage.ts
-TransactionPage.ts
-LoanPage.ts
-```
-
-## Test Files
-
-The test files contain the actual test scenarios and assertions.
-
-```text
-01_LoginPageTest.spec.ts
-02_DashBoardTest.spec.ts
-03_AccountPageTest.spec.ts
-04_TransferPageTest.spec.ts
-05_SendMoneyPageTest.spec.ts
-06_PayBillPageTest.spec.ts
-07_TransactionPageTest.spec.ts
-08_LoanPageTest.spec.ts
-```
-
-## POManager
-
-`POManager.ts` provides centralized access to different Page Objects, helping reduce repeated Page Object initialization inside tests.
-
-## Fixtures
-
-`testFixtures.ts` contains reusable Playwright fixture configuration used across the test suite.
 
 ---
 
 # 🧪 Test Coverage
 
-## 1. Login Module
+## 🔐 Login Module
 
-**Test Cases: LOGIN-001 to LOGIN-008**
+| Test Case ID | Test Case | Tag |
+|---|---|---|
+| LOGIN-001 | Login with valid standard user | `@smoke @regression` |
+| LOGIN-002 | Login with invalid username | `@regression` |
+| LOGIN-003 | Login with invalid password | `@regression` |
+| LOGIN-004 | Login with locked user | `@smoke @regression` |
+| LOGIN-005 | Login with frozen user | `@regression` |
+| LOGIN-006 | Login with admin user | `@regression` |
+| LOGIN-007 | Login with empty username | `@regression` |
+| LOGIN-008 | Login with empty password | `@regression` |
 
-| Test Case ID | Test Case Name | What to Verify | Tag |
-|---|---|---|---|
-| LOGIN-001 | Login with valid standard user | User successfully logs in and is redirected to the Dashboard | `@smoke @regression` |
-| LOGIN-002 | Login with invalid username | Appropriate error message is displayed and user remains on Login page | `@regression` |
-| LOGIN-003 | Login with invalid password | Appropriate error message is displayed and user remains on Login page | `@regression` |
-| LOGIN-004 | Login with locked user | Login is prevented and locked-user error/message is displayed | `@smoke @regression` |
-| LOGIN-005 | Login with frozen user | Login is prevented and frozen-user error/message is displayed | `@regression` |
-| LOGIN-006 | Login with admin user | Admin user successfully logs in and is redirected to the appropriate page/dashboard | `@regression` |
-| LOGIN-007 | Login with empty username | Username validation message is displayed | `@regression` |
-| LOGIN-008 | Login with empty password | Password validation message is displayed | `@regression` |
+### Coverage
 
----
-
-## 2. Dashboard Module
-
-**Test Cases: DASH-001 to DASH-007**
-
-| Test Case ID | Test Case Name | What to Verify | Tag |
-|---|---|---|---|
-| DASH-001 | Verify dashboard loads after successful login | Dashboard loads successfully after valid login | `@smoke @regression` |
-| DASH-002 | Verify Total Net Worth is displayed | Total Net Worth value is visible and displayed correctly | `@smoke @regression` |
-| DASH-003 | Verify Transfer Money quick action | Transfer Money action is visible and navigates to Transfer page | `@smoke @regression` |
-| DASH-004 | Verify Send Money quick action | Send Money action is visible and navigates to Send Money page | `@smoke @regression` |
-| DASH-005 | Verify Pay a Bill quick action | Pay a Bill action is visible and navigates to Bill Pay page | `@regression` |
-| DASH-006 | Verify Transactions quick action | Transactions action is visible and navigates to Transactions page | `@regression` |
-| DASH-007 | Verify Logout | User can successfully log out and is returned to Login page | `@smoke @regression` |
+- Valid login
+- Invalid credentials
+- Locked user
+- Frozen user
+- Admin login
+- Empty field validation
+- Login page navigation and error handling
 
 ---
 
-## 3. Accounts Module
+## 🏠 Dashboard Module
 
-**Test Cases: ACC-001 to ACC-010**
+| Test Case ID | Test Case | Tag |
+|---|---|---|
+| DASH-001 | Verify dashboard loads after successful login | `@smoke @regression` |
+| DASH-002 | Verify Total Net Worth is displayed | `@smoke @regression` |
+| DASH-003 | Verify Transfer Money quick action | `@smoke @regression` |
+| DASH-004 | Verify Send Money quick action | `@smoke @regression` |
+| DASH-005 | Verify Pay a Bill quick action | `@regression` |
+| DASH-006 | Verify Transactions quick action | `@regression` |
+| DASH-007 | Verify Logout | `@smoke @regression` |
 
-| Test Case ID | Test Case Name | What to Verify | Tag |
-|---|---|---|---|
-| ACC-001 | Verify Accounts page loads successfully | Accounts page opens successfully and the account list/summary is displayed | `@smoke @regression` |
-| ACC-002 | Verify user account information | Each account displays the correct account name, account type, masked account number, balance and status | `@smoke @regression` |
-| ACC-003 | View account details | Clicking View Account opens the correct account and displays its account information and transaction history | `@smoke @regression` |
-| ACC-004 | Verify account transaction history | Account details display transaction date, description, category, amount and running balance correctly | `@smoke @regression` |
-| ACC-005 | Search account transactions | Searching by transaction description returns the relevant transactions | `@regression` |
-| ACC-006 | Search with no matching transaction | Search with a non-existing description displays an appropriate empty/no-results state | `@regression` |
-| ACC-007 | Filter account transactions by date | From date, To date and date-range filters return transactions within the selected period | `@regression` |
-| ACC-008 | Filter account transactions by type | Credit, Debit and All transaction filters display the appropriate transactions | `@regression` |
-| ACC-009 | Sort account transactions | Transactions can be sorted correctly by date and amount | `@regression` |
-| ACC-010 | Combine transaction filters | User can combine search/date/type filters and receive the expected transaction results | `@regression` |
+### Coverage
 
----
-
-## 4. Transfer Module
-
-**Test Cases: TRF-001 to TRF-010**
-
-| Test Case ID | Test Case Name | What to Verify | Tag |
-|---|---|---|---|
-| TRF-001 | Verify Transfers page loads successfully | Transfers page loads successfully | `@smoke @regression` |
-| TRF-002 | Verify transfer form displays required fields and account options | Required fields and eligible account options are displayed | `@smoke @regression` |
-| TRF-003 | Verify successful transfer between eligible accounts | Transfer is successfully completed between eligible accounts | `@smoke @regression` |
-| TRF-004 | Verify transfer amount validation | Invalid transfer amount is rejected with appropriate validation | `@regression` |
-| TRF-005 | Verify transfer cannot be submitted without selecting required accounts | Transfer cannot be submitted when required accounts are not selected | `@regression` |
-| TRF-006 | Verify transfer cannot be made when source and destination accounts are the same | Transfer is prevented when source and destination accounts are identical | `@regression` |
-| TRF-007 | Verify transfer is rejected when amount exceeds available balance | Transfer is rejected when the amount exceeds available balance | `@regression` |
-| TRF-008 | Verify transfer confirmation displays correct transaction details | Confirmation displays the correct transfer details | `@smoke @regression` |
-| TRF-009 | Verify completed transfer updates account balances / transaction history | Account balances and transaction history are updated after transfer | `@regression` |
-| TRF-010 | Verify transfer form can be reset/cancelled without creating a transaction | Reset/cancel does not create a transaction | `@regression` |
+- Dashboard loading
+- Net worth verification
+- Quick action navigation
+- Logout functionality
 
 ---
 
-## 5. Send Money Module
+## 🏦 Account Module
 
-**Test Cases: SND-001 to SND-010**
+| Test Case ID | Test Case | Tag |
+|---|---|---|
+| ACC-001 | Verify Accounts page loads successfully | `@smoke @regression` |
+| ACC-002 | Verify user account information | `@smoke @regression` |
+| ACC-003 | View account details | `@smoke @regression` |
+| ACC-004 | Verify account transaction history | `@smoke @regression` |
+| ACC-005 | Search account transactions | `@regression` |
+| ACC-006 | Search with no matching transaction | `@regression` |
+| ACC-007 | Filter account transactions by date | `@regression` |
+| ACC-008 | Filter account transactions by type | `@regression` |
+| ACC-009 | Sort account transactions | `@regression` |
+| ACC-010 | Combine transaction filters | `@regression` |
 
-| Test Case ID | Test Case Name | What to Verify | Tag |
-|---|---|---|---|
-| SND-001 | Verify Send Money page loads successfully | Send Money page loads successfully | `@smoke @regression` |
-| SND-002 | Verify Send Money form displays required fields and available options | Required fields and available options are displayed | `@smoke @regression` |
-| SND-003 | Verify successful Send Money transaction to an existing payee | Money is successfully sent to an existing payee | `@smoke @regression` |
-| SND-004 | Verify Add New Payee validation for invalid routing/account numbers | Invalid routing/account numbers are rejected | `@regression` |
-| SND-005 | Verify Send Money amount validation | Invalid Send Money amount is rejected | `@regression` |
-| SND-006 | Verify Send Money is rejected when amount exceeds available balance | Transaction is rejected when amount exceeds available balance | `@regression` |
-| SND-007 | Verify new payee is saved when "Save Payee" is selected | New payee is saved when Save Payee is selected | `@regression` |
-| SND-008 | Verify Send Money transaction review displays the correct payment detail | Review page displays correct payment details | `@regression` |
-| SND-010 | Verify cancelling Send Money does not create a transaction | Cancelling Send Money does not create a transaction | `@regression` |
+### Coverage
 
----
-
-## 6. Pay Bill Module
-
-**Test Cases: BILL-001 to BILL-009**
-
-| Test Case ID | Test Case Name | What to Verify | Tag |
-|---|---|---|---|
-| BILL-001 | Verify Bill Pay page loads successfully | Bill Pay page loads successfully | `@smoke @regression` |
-| BILL-002 | Verify Bill Pay form displays account, biller, amount, payment date and memo fields | Required Bill Pay fields are displayed | `@smoke @regression` |
-| BILL-003 | Verify user can search and select an existing biller | Existing biller can be searched and selected | `@smoke @regression` |
-| BILL-004 | Verify user can add a new biller successfully | New biller can be added successfully | `@regression` |
-| BILL-005 | Verify successful bill payment to an existing biller | Bill payment is successfully completed | `@smoke @regression` |
-| BILL-006 | Verify bill payment amount validation | Invalid bill payment amount is rejected | `@regression` |
-| BILL-007 | Verify bill payment is rejected when amount exceeds available balance | Payment is rejected when amount exceeds available balance | `@regression` |
-| BILL-008 | Verify future payment date can be scheduled successfully | Future bill payment can be scheduled successfully | `@regression` |
-| BILL-009 | Verify payment review displays correct payment details before confirmation | Payment review displays correct payment details | `@regression` |
+- Account information
+- Account details
+- Transaction history
+- Transaction search
+- Date filtering
+- Credit/Debit filtering
+- Sorting
+- Combined filters
+- No-result scenarios
 
 ---
 
-## 7. Transactions Module
+## 💸 Transfer Module
 
-**Test Cases: TXN-001 to TXN-009**
+| Test Case ID | Test Case | Tag |
+|---|---|---|
+| TRF-001 | Verify Transfers page loads successfully | `@smoke @regression` |
+| TRF-002 | Verify transfer form displays required fields and account options | `@smoke @regression` |
+| TRF-003 | Verify successful transfer between eligible accounts | `@smoke @regression` |
+| TRF-004 | Verify transfer amount validation | `@regression` |
+| TRF-005 | Verify transfer cannot be submitted without selecting required accounts | `@regression` |
+| TRF-006 | Verify transfer cannot be made when source and destination accounts are the same | `@regression` |
+| TRF-007 | Verify transfer is rejected when amount exceeds available balance | `@regression` |
+| TRF-008 | Verify transfer confirmation displays correct transaction details | `@smoke @regression` |
+| TRF-009 | Verify completed transfer updates account balances / transaction history | `@regression` |
+| TRF-010 | Verify transfer form can be reset/cancelled without creating a transaction | `@regression` |
 
-| Test Case ID | Test Case Name | What to Verify | Tag |
-|---|---|---|---|
-| TXN-001 | Verify Transactions page loads successfully and displays recent transactions | Transactions page loads and recent transactions are displayed | `@smoke @regression` |
-| TXN-002 | Verify transactions can be filtered by account | Transactions are filtered according to selected account | `@smoke @regression` |
-| TXN-003 | Verify transactions can be filtered by type — Credit and Debit | Credit and Debit filters display appropriate transactions | `@regression` |
-| TXN-004 | Verify transactions can be searched by description | Searching by description returns relevant transactions | `@regression` |
-| TXN-005 | Verify transactions can be sorted by date | Transactions are sorted correctly by date | `@regression` |
-| TXN-006 | Verify transactions can be sorted by amount | Transactions are sorted correctly by amount | `@regression` |
-| TXN-007 | Verify multiple transaction filters work together | Multiple filters work together and return expected results | `@regression` |
-| TXN-008 | Verify transaction list displays correct details for a completed transaction | Completed transaction displays correct details | `@smoke @regression` |
-| TXN-009 | Verify no transactions message is displayed when filters return no results | Appropriate no-results message is displayed | `@regression` |
+### Coverage
 
----
-
-## 8. Loans Module
-
-**Test Cases: LOAN-001 to LOAN-009**
-
-| Test Case ID | Test Case Name | What to Verify | Tag |
-|---|---|---|---|
-| LOAN-001 | Verify Apply Loan form opens with all required fields | Apply Loan form opens with all required fields | `@smoke @regression` |
-| LOAN-002 | Verify successful loan application with valid details | Loan application is successfully submitted with valid details | `@smoke @regression` |
-| LOAN-003 | Verify loan amount validation for amount exceeding $250,000 | Loan amount exceeding $250,000 is rejected | `@regression` |
-| LOAN-004 | Verify newly submitted loan appears in loan history with correct details | Newly submitted loan appears with correct details | `@regression` |
-| LOAN-005 | Verify loan history pagination displays correct records | Pagination displays the correct loan history records | `@regression` |
-| LOAN-006 | Verify loan history can be filtered by loan type | Loan history can be filtered by loan type | `@regression` |
-| LOAN-007 | Verify loan history can be searched by reference or purpose | Loan history can be searched by reference or purpose | `@regression` |
-| LOAN-008 | Verify loan history can be filtered by date range | Loan history can be filtered using a date range | `@regression` |
-| LOAN-009 | Verify loan history sorting by date and amount | Loan history can be sorted by date and amount | `@regression` |
+- Transfer form validation
+- Successful transfers
+- Required field validation
+- Same-account validation
+- Insufficient balance
+- Confirmation details
+- Balance and transaction updates
+- Reset/cancel functionality
 
 ---
 
-# 🧩 Key Framework Features
+## 💰 Send Money Module
+
+| Test Case ID | Test Case | Tag |
+|---|---|---|
+| SND-001 | Verify Send Money page loads successfully | `@smoke @regression` |
+| SND-002 | Verify Send Money form displays required fields and available options | `@smoke @regression` |
+| SND-003 | Verify successful Send Money transaction to an existing payee | `@smoke @regression` |
+| SND-004 | Verify Add New Payee validation for invalid routing/account numbers | `@regression` |
+| SND-005 | Verify Send Money amount validation | `@regression` |
+| SND-006 | Verify Send Money is rejected when amount exceeds available balance | `@regression` |
+| SND-007 | Verify new payee is saved when "Save Payee" is selected | `@regression` |
+| SND-008 | Verify Send Money transaction review displays the correct payment detail | `@regression` |
+| SND-010 | Verify cancelling Send Money does not create a transaction | `@regression` |
+
+### Coverage
+
+- Send Money form
+- Existing payees
+- New payee validation
+- Amount validation
+- Insufficient balance
+- Save Payee functionality
+- Payment review
+- Cancel functionality
+
+---
+
+## 💡 Pay Bill Module
+
+| Test Case ID | Test Case | Tag |
+|---|---|---|
+| BILL-001 | Verify Bill Pay page loads successfully | `@smoke @regression` |
+| BILL-002 | Verify Bill Pay form displays account, biller, amount, payment date and memo fields | `@smoke @regression` |
+| BILL-003 | Verify user can search and select an existing biller | `@smoke @regression` |
+| BILL-004 | Verify user can add a new biller successfully | `@regression` |
+| BILL-005 | Verify successful bill payment to an existing biller | `@smoke @regression` |
+| BILL-006 | Verify bill payment amount validation | `@regression` |
+| BILL-007 | Verify bill payment is rejected when amount exceeds available balance | `@regression` |
+| BILL-008 | Verify future payment date can be scheduled successfully | `@regression` |
+| BILL-009 | Verify payment review displays correct payment details before confirmation | `@regression` |
+
+### Coverage
+
+- Bill Pay page
+- Biller search and selection
+- New biller
+- Successful bill payment
+- Amount validation
+- Insufficient balance
+- Future payment scheduling
+- Payment review
+
+---
+
+## 📊 Transactions Module
+
+| Test Case ID | Test Case | Tag |
+|---|---|---|
+| TXN-001 | Verify Transactions page loads successfully and displays recent transactions | `@smoke @regression` |
+| TXN-002 | Verify transactions can be filtered by account | `@smoke @regression` |
+| TXN-003 | Verify transactions can be filtered by type — Credit and Debit | `@regression` |
+| TXN-004 | Verify transactions can be searched by description | `@regression` |
+| TXN-005 | Verify transactions can be sorted by date | `@regression` |
+| TXN-006 | Verify transactions can be sorted by amount | `@regression` |
+| TXN-007 | Verify multiple transaction filters work together | `@regression` |
+| TXN-008 | Verify transaction list displays correct details for a completed transaction | `@smoke @regression` |
+| TXN-009 | Verify no transactions message is displayed when filters return no results | `@regression` |
+
+### Coverage
+
+- Transaction list
+- Account filtering
+- Credit/Debit filtering
+- Search
+- Date sorting
+- Amount sorting
+- Combined filters
+- Transaction details
+- No-result state
+
+---
+
+## 🏠 Loans Module
+
+| Test Case ID | Test Case | Tag |
+|---|---|---|
+| LOAN-001 | Verify Apply Loan form opens with all required fields | `@smoke @regression` |
+| LOAN-002 | Verify successful loan application with valid details | `@smoke @regression` |
+| LOAN-003 | Verify loan amount validation for amount exceeding $250,000 | `@regression` |
+| LOAN-004 | Verify newly submitted loan appears in loan history with correct details | `@regression` |
+| LOAN-005 | Verify loan history pagination displays correct records | `@regression` |
+| LOAN-006 | Verify loan history can be filtered by loan type | `@regression` |
+| LOAN-007 | Verify loan history can be searched by reference or purpose | `@regression` |
+| LOAN-008 | Verify loan history can be filtered by date range | `@regression` |
+| LOAN-009 | Verify loan history sorting by date and amount | `@regression` |
+
+### Coverage
+
+- Apply Loan form
+- Successful loan application
+- Loan amount validation
+- Loan history
+- Pagination
+- Loan type filtering
+- Search
+- Date range filtering
+- Sorting by date and amount
+
+---
+
+# 🧱 Framework Design
 
 ## Page Object Model
 
-Application locators and actions are maintained separately from test cases.
+The project follows the **Page Object Model (POM)** design pattern.
 
-This provides:
+Each application page has a dedicated Page Object containing:
 
-- Better code organization
+- Locators
+- Page-specific actions
 - Reusable methods
-- Easier maintenance
-- Improved test readability
+- Page-specific validations where required
 
-## Playwright Fixtures
+Example:
 
-Common test setup and reusable Playwright functionality are handled through fixtures.
+```text
+tests/
+    03_AccountPageTest.spec.ts
+
+pageobject/
+    AccountPage.ts
+```
+
+This keeps test cases readable and separates test logic from UI interaction logic.
+
+---
+
+## 🧩 Playwright Fixtures
+
+Reusable test setup is handled using Playwright fixtures.
+
+The fixture layer helps provide reusable dependencies such as:
+
+- Page Objects
+- POManager
+- Common test setup
+
+Example:
 
 ```text
 fixtures/
 └── testFixtures.ts
 ```
 
-## Page Object Manager
+Tests can consume the required fixture instead of repeatedly creating the same Page Object dependencies.
 
-`POManager.ts` provides centralized access to different Page Objects.
+---
 
-This avoids repeatedly creating Page Object instances inside test cases.
+## 🗂️ Page Object Manager
 
-## Business-Oriented Test Scenarios
+`POManager.ts` is used to manage and create Page Object instances.
 
-The framework focuses on realistic banking business scenarios rather than testing only individual UI elements.
+This provides a centralized way to access objects such as:
 
-Examples include:
-
-- Successful money transfer
-- Successful Send Money transaction
-- Successful bill payment
-- Successful loan application
-- Insufficient balance validation
-- Transaction filtering
-- Transaction sorting
-- Loan history pagination
-- Loan history filtering
-- Transaction history validation
-
-## Test Tags
-
-Tests are categorized using Playwright tags:
-
-```text
-@smoke
-@regression
-```
-
-### Smoke Tests
-
-Used for critical business flows and core application functionality.
-
-### Regression Tests
-
-Used for broader functional coverage across the application.
+- LoginPage
+- Dashboard
+- AccountPage
+- TransferPage
+- SendMoneyPage
+- PayBillPage
+- TransactionPage
+- LoanPage
 
 ---
 
 # 🚀 Installation
 
-Clone the repository:
+## 1. Clone the repository
 
 ```bash
 git clone https://github.com/aritrax/banking-app-playwright-automation.git
 ```
 
-Navigate to the project:
+## 2. Navigate to the project
 
 ```bash
 cd banking-app-playwright-automation
 ```
 
-Install dependencies:
+## 3. Install dependencies
 
 ```bash
 npm install
 ```
 
-Install Playwright browsers:
+## 4. Install Playwright browsers
 
 ```bash
 npx playwright install
@@ -356,43 +382,31 @@ npx playwright install
 
 # ▶️ Running Tests
 
-## Run the Complete Test Suite
+## Run all tests
 
 ```bash
 npx playwright test
 ```
 
-## Run Tests in Headed Mode
-
-```bash
-npx playwright test --headed
-```
-
-## Run a Specific Test File
+## Run a specific test file
 
 ```bash
 npx playwright test tests/08_LoanPageTest.spec.ts
 ```
 
-## Run Smoke Tests
+## Run tests in headed mode
 
 ```bash
-npx playwright test --grep @smoke
+npx playwright test --headed
 ```
 
-## Run Regression Tests
+## Run a specific test in headed mode
 
 ```bash
-npx playwright test --grep @regression
+npx playwright test tests/08_LoanPageTest.spec.ts --headed
 ```
 
-## Run a Specific Test by Name
-
-```bash
-npx playwright test -g "Login with valid standard user"
-```
-
-## Debug Tests
+## Run tests in debug mode
 
 ```bash
 npx playwright test --debug
@@ -400,13 +414,35 @@ npx playwright test --debug
 
 ---
 
-# 📊 Test Reporting
+# 🏷️ Running Tests by Tags
 
-The framework supports both **Playwright HTML Reports** and **Allure Reports**.
+## Run Smoke tests
+
+```bash
+npx playwright test --grep "@smoke"
+```
+
+## Run Regression tests
+
+```bash
+npx playwright test --grep "@regression"
+```
+
+## Run a specific tagged test
+
+```bash
+npx playwright test --grep "LOGIN-001"
+```
+
+---
+
+# 📋 Test Reports
 
 ## Playwright HTML Report
 
-After test execution, open the Playwright HTML report using:
+The project is configured to generate the Playwright HTML report.
+
+Run:
 
 ```bash
 npx playwright show-report
@@ -415,78 +451,124 @@ npx playwright show-report
 The report provides:
 
 - Test execution status
-- Passed/failed tests
 - Test duration
 - Error details
-- Screenshots and traces when available
+- Screenshots
+- Traces where available
+- Test execution details
 
-## Allure Report
+---
 
-Allure is used to generate detailed and interactive test execution reports.
+## 📊 Allure Report
 
-Run the test suite:
+Allure reporting is also included in the project.
+
+Run the tests with Allure results enabled:
 
 ```bash
 npx playwright test
 ```
 
-Generate the Allure report:
+Generate and open the Allure report:
 
 ```bash
-allure generate allure-results --clean -o allure-report
+allure generate allure-results --clean
+allure open
 ```
 
-Open the generated Allure report:
+If Allure is installed locally through the project, the corresponding npm script can also be used if configured in `package.json`.
 
-```bash
-allure open allure-report
-```
+The Allure report provides a detailed view of:
 
-Alternatively, generate and open the report directly:
-
-```bash
-allure serve allure-results
-```
-
-The Allure report provides:
-
-- Test execution status
+- Passed tests
+- Failed tests
 - Test duration
-- Passed, failed and skipped tests
 - Test suites
-- Test steps
-- Error details
-- Execution history
-- Detailed test execution information
+- Steps
+- Attachments
+- Execution details
 
 ---
 
-# 🎯 Project Goals
+# 🔎 Useful Playwright Commands
 
-This project demonstrates practical experience with:
+| Purpose | Command |
+|---|---|
+| Run all tests | `npx playwright test` |
+| Run headed | `npx playwright test --headed` |
+| Debug test | `npx playwright test --debug` |
+| Run specific file | `npx playwright test <file>` |
+| Run smoke tests | `npx playwright test --grep "@smoke"` |
+| Run regression tests | `npx playwright test --grep "@regression"` |
+| Open HTML report | `npx playwright show-report` |
 
-- Playwright automation
-- TypeScript
-- Page Object Model
-- Playwright Fixtures
-- Page Object Manager
-- Functional testing
-- Positive and negative testing
-- Validation testing
-- Business-flow automation
-- Smoke testing
-- Regression testing
+---
+
+# 🌿 Git Workflow
+
+The project uses feature branches for module-level development.
+
+Example:
+
+```bash
+git checkout -b feature/apply-loan
+```
+
+After implementing changes:
+
+```bash
+git add .
+git commit -m "feat: add apply loan module tests"
+git push -u origin feature/apply-loan
+```
+
+A Pull Request can then be created on GitHub to merge the feature branch into `main`.
+
+---
+
+# 📌 Test Automation Approach
+
+The framework focuses on realistic banking workflows rather than isolated UI checks.
+
+Examples include:
+
+- Successful money transfers
+- Balance validation
+- Transaction history verification
 - Filtering and sorting
-- Pagination
-- Test reporting
-- Allure reporting
-- Git and GitHub
+- Loan application workflows
+- Bill payments
+- Payee management
+- Negative and validation scenarios
+- Confirmation and review flows
+
+This approach helps validate both **functional behavior** and important **business scenarios** of the banking application.
 
 ---
 
-# 👨‍💻 Author
+# 📈 Project Summary
+
+| Module | Test Cases |
+|---|---:|
+| Login | 8 |
+| Dashboard | 7 |
+| Account | 10 |
+| Transfer | 10 |
+| Send Money | 9 |
+| Pay Bill | 9 |
+| Transactions | 9 |
+| Loans | 9 |
+| **Total** | **71** |
+
+---
+
+## 👨‍💻 Author
 
 **Aritra Paul**
 
+<<<<<<< HEAD
 Playwright | TypeScript | SDET | Test Automation
 ```
+=======
+Playwright Automation | TypeScript | SDET
+>>>>>>> 1b9afff (docs: update project README)
