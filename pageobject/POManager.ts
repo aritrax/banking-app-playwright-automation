@@ -6,6 +6,7 @@ import { AccountPage } from './AccountPage';
 import { SendMoneyPage } from './SendMoneyPage';
 import { PayBillPage } from './PayBillPage';
 import { TransactionPage } from './TransactionPage';
+import { LoanPage } from './LoanPage';
 
 export class POManager
 {
@@ -17,6 +18,7 @@ export class POManager
     sendmoneyPage : SendMoneyPage;
     payBillPage: PayBillPage;
     transactionPage: TransactionPage;
+    loanPage : LoanPage ;
 
     constructor(page: Page)
     {
@@ -28,6 +30,8 @@ export class POManager
         this.sendmoneyPage = new SendMoneyPage(this.page) ;
         this.payBillPage = new PayBillPage(this.page) ;
         this.transactionPage = new TransactionPage(this.page) ;
+        this.loanPage = new LoanPage(this.page) ;
+
     }
 
     async getLoginPage()
@@ -73,6 +77,11 @@ export class POManager
     async getTransactionPage()
     {
         return this.transactionPage ;
+    }
+
+    async getloanPage()
+    {
+        return this.loanPage ;
     }
 
 }

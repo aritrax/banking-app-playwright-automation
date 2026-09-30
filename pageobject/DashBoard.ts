@@ -12,6 +12,7 @@ export class DashBoard
     sidebarAccount: Locator ;
     transferPage : Locator ;
     sendMoneyPage : Locator ;
+    sidebarLoan : Locator ;
 
     constructor(page: Page)
     {
@@ -23,7 +24,8 @@ export class DashBoard
         this.transcationAction = page.getByTestId("quick-action-transactions") ;
         this.logout = page.getByLabel("Logout") ;
 
-        this.sidebarAccount = page.getByTestId("sidebar-link-accounts")
+        this.sidebarAccount = page.getByTestId("sidebar-link-accounts") ;
+        this.sidebarLoan = page.getByTestId("sidebar-link-apply-loan") ;
         this.transferPage = page.getByTestId("sidebar-link-transfer") ;
         this.sendMoneyPage = page.getByTestId("sidebar-link-send-money") ;
     }
@@ -89,5 +91,11 @@ export class DashBoard
     {
         await this.payBillAction.click() ;
         await expect(this.page).toHaveURL("https://qaplayground.com/bank/bill-pay");
+    }
+
+    async gotoApplyLoan()
+    {
+        await this.sidebarLoan.click() ;
+        await expect(this.page).toHaveURL("https://qaplayground.com/bank/apply-loan");
     }
 }
