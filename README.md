@@ -1,3 +1,4 @@
+```markdown
 # Banking Application – Playwright Automation
 
 ## 📌 Project Overview
